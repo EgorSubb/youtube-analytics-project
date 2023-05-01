@@ -20,6 +20,30 @@ class Channel:
         self.video_count = self.channel_data['items'][0]['statistics']['videoCount']
         self.view_count = self.channel_data['items'][0]['statistics']['viewCount']
 
+    # def __repr__(self):
+    #     return f"{self.__class__.__name__}({self.}"
+
+    def __str__(self):
+        return f"{self.title}({self.url})"
+
+    def __add__(self, other):
+        return int(self.subscribers) + int(other.subscribers)
+
+    def __sub__(self, other):
+        return int(self.subscribers)- int(other.subscribers)
+
+    def __lt__(self, other):
+        return int(self.subscribers) < int(other.subscribers)
+
+    def __le__(self, other):
+        return int(self.subscribers) <= int(other.subscribers)
+
+    def __gt__(self, other):
+        return int(self.subscribers) > int(other.subscribers)
+
+    def __ge__(self, other):
+        return int(self.subscribers) >= int(other.subscribers)
+
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
         channel = self.youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()
@@ -42,9 +66,7 @@ class Channel:
 
     @classmethod
     def get_service(cls):
-        api_key: str = os.getenv('API_KEY')
-        youtube = build('youtube', 'v3', developerKey=api_key)
-        return youtube
+        return cls.youtube
 
     @property
     def channel_id(self):
